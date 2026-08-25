@@ -1,6 +1,29 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from 'react';
 
 function LeadPage() {
+
+  const [LeadData,setLeadData]=useState([])
+
+  const handleLead = async()=>{
+
+    const response = await fetch('/api/Lead',{
+      method:'GET'
+    })
+
+    const data =  await response.json()
+
+    setLeadData(data)
+    console.log(data)
+
+
+  }
+
+  useEffect(()=>{
+    handleLead()
+  },[])
+
+
   return (
 
     <>
@@ -30,12 +53,12 @@ function LeadPage() {
 
 
       {/* Table */}
-      <div className="overflow-x-auto bg-[#111111] border border-gray-800 rounded-xl">
+      <div className="max-h-[500px] overflow-y-auto overflow-x-auto bg-[#111111] border border-gray-800 rounded-xl">
 
         <table className="w-full min-w-[700px] text-left">
 
           {/* Table Head */}
-          <thead className="border-b border-gray-800">
+          <thead className="border-b border-gray-800  sticky top-0 z-10 bg-[#111111]" >
             <tr>
               <th className="px-6 py-4 text-gray-400 font-semibold">
                 Name
@@ -57,21 +80,25 @@ function LeadPage() {
 
 
           {/* Table Body */}
-          <tbody>
+          <tbody >
 
-            {/* Lead 1 */}
-            <tr className="border-b border-gray-800 hover:bg-[#181818]">
+
+            {
+
+              LeadData.length>0?
+              LeadData.map((item)=>(
+                  <tr key={item._id} className="border-b border-gray-800 hover:bg-[#181818]">
 
               <td className="px-6 py-5 font-medium">
-                Razip
+                {item.userName}
               </td>
 
               <td className="px-6 py-5 text-gray-400">
-                Premium
+                {item.Plan}
               </td>
 
               <td className="px-6 py-5 text-gray-400">
-                +91 98765 43210
+                {item.PhoneNumber}
               </td>
 
               <td className="px-6 py-5">
@@ -81,10 +108,24 @@ function LeadPage() {
               </td>
 
             </tr>
+              )): (
+    <tr>
+      <td colSpan="4" className="text-center">
+        No leads found
+      </td>
+    </tr>
+              )
+
+
+            }
+
+            {/* Lead 1 */}
+          
+
 
 
             {/* Lead 2 */}
-            <tr className="border-b border-gray-800 hover:bg-[#181818]">
+            {/* <tr className="border-b border-gray-800 hover:bg-[#181818]">
 
               <td className="px-6 py-5 font-medium">
                 Arjun
@@ -104,11 +145,11 @@ function LeadPage() {
                 </span>
               </td>
 
-            </tr>
+            </tr> */}
 
 
             {/* Lead 3 */}
-            <tr className="border-b border-gray-800 hover:bg-[#181818]">
+            {/* <tr className="border-b border-gray-800 hover:bg-[#181818]">
 
               <td className="px-6 py-5 font-medium">
                 Adil
@@ -128,11 +169,11 @@ function LeadPage() {
                 </span>
               </td>
 
-            </tr>
+            </tr> */}
 
 
             {/* Lead 4 */}
-            <tr className="hover:bg-[#181818]">
+            {/* <tr className="hover:bg-[#181818]">
 
               <td className="px-6 py-5 font-medium">
                 Salman
@@ -152,7 +193,7 @@ function LeadPage() {
                 </span>
               </td>
 
-            </tr>
+            </tr> */}
 
           </tbody>
 
