@@ -13,6 +13,12 @@ const userScheama = new mongoose.Schema({
         type:String,
         required:true
     },
+     LeadStatus:{
+        type:String,
+        default:"New",
+        required: false
+    }
+    
     
 })
 

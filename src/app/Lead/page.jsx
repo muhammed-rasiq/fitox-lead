@@ -19,6 +19,18 @@ function LeadPage() {
 
   }
 
+  const handleLeadStatus = async()=>{
+
+    const response = await fetch('/api/Lead',{
+      method:'POST',
+      headers:{
+        "Content-Type": "application/json"
+      },
+      body:JSON.stringify()
+    })
+
+  }
+
   useEffect(()=>{
     handleLead()
   },[])
