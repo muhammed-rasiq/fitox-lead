@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 function LeadPage() {
 
   const [LeadData,setLeadData]=useState([])
+  const [search,setSearch]=useState("")
 
   const handleLead = async()=>{
 
@@ -19,17 +20,31 @@ function LeadPage() {
 
   }
 
-  const handleLeadStatus = async()=>{
+  const handleLeadStatus = async(LeadId,status)=>{
 
     const response = await fetch('/api/Lead',{
       method:'POST',
       headers:{
         "Content-Type": "application/json"
       },
-      body:JSON.stringify()
+      body:JSON.stringify({LeadId,LeadStatus:status})
     })
 
+    const data = await response.json()
+    console.log(data)
+
+
+    setLeadData((prev)=>(
+      prev.map((item)=>
+        item._id === LeadId ?  { ...item, LeadStatus: status } : item
+      )
+    ))
+
+   
+
   }
+
+
 
   useEffect(()=>{
     handleLead()
@@ -59,7 +74,9 @@ function LeadPage() {
         <input
           type="text"
           placeholder="Search leads..."
+          value={search}
           className="w-full md:w-96 bg-[#111111] border border-gray-800 rounded-lg px-5 py-3 text-white outline-none focus:border-red-500"
+          onChange={(e)=>setSearch(e.target.value)}
         />
       </div>
 
@@ -97,8 +114,16 @@ function LeadPage() {
 
             {
 
+              
+
               LeadData.length>0?
-              LeadData.map((item)=>(
+
+              LeadData.filter((item)=>
+                item.userName.toLowerCase().includes(search.toLowerCase()) ||
+                item.PhoneNumber.toLowerCase().includes(search.toLowerCase())
+            )
+              
+              .map((item)=>(
                   <tr key={item._id} className="border-b border-gray-800 hover:bg-[#181818]">
 
               <td className="px-6 py-5 font-medium">
@@ -114,10 +139,16 @@ function LeadPage() {
               </td>
 
               <td className="px-6 py-5">
-                <span className="bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full text-sm">
-                  New
-                </span>
+               <select className="border rounded px-2 py-1 bg-yellow-500/10 text-yellow-600 px-3 py-1 rounded-full text-sm" onChange={(e)=>handleLeadStatus(item._id,e.target.value)}  value={item.LeadStatus}
+  disabled={item.LeadStatus !== "New" }>
+                    <option>New</option>
+                   
+                    <option>Contacted</option>
+                   
+                  </select>
               </td>
+
+                
 
             </tr>
               )): (
@@ -131,81 +162,7 @@ function LeadPage() {
 
             }
 
-            {/* Lead 1 */}
-          
-
-
-
-            {/* Lead 2 */}
-            {/* <tr className="border-b border-gray-800 hover:bg-[#181818]">
-
-              <td className="px-6 py-5 font-medium">
-                Arjun
-              </td>
-
-              <td className="px-6 py-5 text-gray-400">
-                Basic
-              </td>
-
-              <td className="px-6 py-5 text-gray-400">
-                +91 91234 56789
-              </td>
-
-              <td className="px-6 py-5">
-                <span className="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-sm">
-                  Contacted
-                </span>
-              </td>
-
-            </tr> */}
-
-
-            {/* Lead 3 */}
-            {/* <tr className="border-b border-gray-800 hover:bg-[#181818]">
-
-              <td className="px-6 py-5 font-medium">
-                Adil
-              </td>
-
-              <td className="px-6 py-5 text-gray-400">
-                Elite
-              </td>
-
-              <td className="px-6 py-5 text-gray-400">
-                +91 99887 66554
-              </td>
-
-              <td className="px-6 py-5">
-                <span className="bg-blue-500/10 text-blue-400 px-3 py-1 rounded-full text-sm">
-                  Closed
-                </span>
-              </td>
-
-            </tr> */}
-
-
-            {/* Lead 4 */}
-            {/* <tr className="hover:bg-[#181818]">
-
-              <td className="px-6 py-5 font-medium">
-                Salman
-              </td>
-
-              <td className="px-6 py-5 text-gray-400">
-                Premium
-              </td>
-
-              <td className="px-6 py-5 text-gray-400">
-                +91 90123 45678
-              </td>
-
-              <td className="px-6 py-5">
-                <span className="bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full text-sm">
-                  New
-                </span>
-              </td>
-
-            </tr> */}
+            
 
           </tbody>
 
