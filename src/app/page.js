@@ -1,6 +1,35 @@
+"use client";
+import { useState } from "react";
 
 
 export default function Home() {
+
+  const [inputData,setInputData]=useState({
+    userName:"",
+    password:""
+  })
+
+
+  const handleLogin = async()=>{
+
+    const response = await fetch('/api/Home',{
+
+      method:"POST",
+      headers:{
+         "Content-Type": "application/json"
+      },
+      body:JSON.stringify(inputData)
+
+    })
+
+    const data =  await response.json()
+    console.log(data)
+
+
+
+  }
+
+
   return (
       <section className="min-h-screen bg-black text-white flex items-center justify-center px-6 py-12">
 
@@ -15,13 +44,14 @@ export default function Home() {
           {/* Email */}
           <div className="mb-5">
             <label className="block text-sm font-semibold mb-2">
-              Email
+             user Name
             </label>
 
             <input
               type="email"
               placeholder="Enter your email"
               className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-red-500 transition"
+              onChange={(e)=>setInputData({...inputData,userName:e.target.value})}
             />
           </div>
 
@@ -36,6 +66,7 @@ export default function Home() {
               type="password"
               placeholder="Enter your password"
               className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-red-500 transition"
+              onChange={(e)=>setInputData({...inputData,password:e.target.value})}
             />
           </div>
 
@@ -56,7 +87,7 @@ export default function Home() {
 
 
           {/* Login Button */}
-          <button className="w-full bg-red-500 hover:bg-red-600 py-3 rounded-lg font-bold text-lg transition">
+          <button className="w-full bg-red-500 hover:bg-red-600 py-3 rounded-lg font-bold text-lg transition" onClick={handleLogin}>
             Login
           </button>
 
