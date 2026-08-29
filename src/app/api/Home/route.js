@@ -3,15 +3,18 @@ import User from "@/model/userModel";
 
 export async function POST(req){
 
-    const {userName,password}=req.json()
+    
 
     try {
+
         await dbConnect()
+
+        const {userName,password} = await req.json()
 
         const admin = await User.findOne({userName:userName,password:password})
 
         if(admin){
-            return Response.json({message:'login successfull', admin})
+            return Response.json({message:'login successfull', admin},{status:201})
         }
 
         return Response.json(

@@ -119,8 +119,8 @@ function LeadPage() {
               LeadData.length>0?
 
               LeadData.filter((item)=>
-                item.userName.toLowerCase().includes(search.toLowerCase()) ||
-                item.PhoneNumber.toLowerCase().includes(search.toLowerCase())
+                item.userName?.replace(/\s/g, "").toLowerCase().includes(search.replace(/\s/g, "").toLowerCase()) ||
+                item.PhoneNumber?.replace(/\s/g, "").toLowerCase().includes(search.replace(/\s/g, "").toLowerCase())
             )
               
               .map((item)=>(

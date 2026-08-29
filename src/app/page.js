@@ -1,4 +1,5 @@
 "use client";
+import { redirect } from "next/dist/server/api-utils";
 import { useState } from "react";
 
 
@@ -25,6 +26,15 @@ export default function Home() {
     const data =  await response.json()
     console.log(data)
 
+  if (data.admin?.role === "Admin") {
+    document.cookie = "role=admin; path=/";
+
+     window.location.href = "/Lead";
+}else{
+  alert('invalid username or pasword')
+}
+
+
 
 
   }
@@ -49,7 +59,7 @@ export default function Home() {
 
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder="Enter your user name"
               className="w-full bg-black border border-gray-700 rounded-lg px-4 py-3 outline-none focus:border-red-500 transition"
               onChange={(e)=>setInputData({...inputData,userName:e.target.value})}
             />
@@ -87,7 +97,7 @@ export default function Home() {
 
 
           {/* Login Button */}
-          <button className="w-full bg-red-500 hover:bg-red-600 py-3 rounded-lg font-bold text-lg transition" onClick={handleLogin}>
+          <button className="w-full bg-red-500 hover:bg-red-600 py-3 rounded-lg font-bold text-lg transition cursor-pointer" onClick={handleLogin}>
             Login
           </button>
 
