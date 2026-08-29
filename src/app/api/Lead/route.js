@@ -9,7 +9,7 @@ export async function GET(){
     try {
         await dbConnect()
 
-    const getLead = await User.find()
+    const getLead = await User.find({ role: { $ne: "Admin" }})
     
     if(getLead.length<0){
         return Response.json({message:'no leads'})
